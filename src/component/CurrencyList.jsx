@@ -1,6 +1,7 @@
 import { React, useState } from "react";
 import currency from "../assets/countries.json";
 import { SelectOptions } from "./CurrencyList.Options";
+import "../App.css";
 
 export const CurrencyList = ({
   baseCurr,
@@ -10,7 +11,8 @@ export const CurrencyList = ({
 }) => {
   // const [baseCurr, setSearchInput] = useState(baseCurr);
   // const [flag, setFlag] = useState(Dflag);
-  const [showDropDown, setShowDropDown] = useState(true);
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [updateFlag, setUpdateFlag] = useState(false);
 
   function setInput(value, bool, img) {
     changeBase(value);
@@ -18,35 +20,47 @@ export const CurrencyList = ({
     ChangeFlag(img);
   }
 
+  const handleInputChange = (e) => {
+    changeBase(e.target.value);
+    if (updateFlag) {
+      ChangeFlag("https://cdn-icons-png.flaticon.com/128/6897/6897039.png");
+      setUpdateFlag(false);
+    }
+  };
+
   return (
     <div>
-      <div className="border-1 h-14 p-0 w-[95%] sm:w-max">
+      <div className="border-1 border-[#ccc]  h-16 p-1 pr-0 shadow-lg rounded-lg bg-white transition-colors duration-300 ease-in-out focus-within:border-blue-500  hover:border-blue-500 font-semibold w-[95%] sm:w-max">
         <img
           src={baseFlag}
           alt="flag"
-          className="inline p-1.5 py-0 h-12  pr-0 pt-0   border-none border-r-0"
+          className="inline p-1.5 py-0 h-14  pr-0 pt-0 object-contain w-14  border-0 "
         />
         <input
           type="text"
           value={baseCurr}
-          onChange={(e) => changeBase(e.target.value)}
+          onChange={handleInputChange}
           onDrop={(e) => e.preventDefault()}
           onClick={(e) => {
-            setShowDropDown(false);
+            setShowDropDown(true);
+            setUpdateFlag(true);
             return e.target.select();
           }}
-          className="p-1.5 m-3 border-none h-12  mt-1  pt-1 ml-2 border-l-0 outline-none focus:outline-none w-[70%] sm:w-65"
+          placeholder="Enter currency code/ country Name"
+          className="p-1.5 m-4 border-none h-12 w-[70%]  mt-1  pt-1 ml-2 border-l-0 outline-none focus:outline-none  sm:w-65"
         />
       </div>
 
       <div
         className={
-          showDropDown
+          !showDropDown
             ? "hidden"
-            : "h-80 bg-white rounded-2xl overflow-auto w-70  absolute z-999 "
+            : "max-h-70 h-max bg-white rounded-2xl overflow-auto max-w-87 w-max  absolute z-999  whitespace-nowrap text-ellipsis overflow-x-hidden scrollbar"
         }
       >
-        {baseCurr === "" || baseCurr === "INR" || baseCurr === "USD"
+        {baseCurr === "" ||
+        baseCurr === "INR - Indian Rupee" ||
+        baseCurr === "USD - United States Dollar"
           ? currency.map((data, index) => {
               return (
                 <SelectOptions

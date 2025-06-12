@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+
+    border-radius: 50px;
+    background-color: rgb(237, 233, 233);
+    padding-right: 10px;
+
+}
+
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: gray;
+    border-radius: 4px;
+
+}
+
+@media screen and (max-width: 500px) {
+    .scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+}

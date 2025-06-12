@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#Environment variable
+.env
+
+#files
+CheckDiff.jsx
+CurrencyBoard.jsx
+Graph.jsx

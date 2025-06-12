@@ -9,9 +9,9 @@ export const SelectOptions = ({ value, flag, setInput }) => {
       <img
         src={flag}
         alt="flag"
-        className="p-1 m-1  ml-3 inline cursor-pointer"
+        className="p-1 m-1  ml-3 inline cursor-pointer w-12 h-10"
       />
-      <li className="inline list-none cursor-pointer  bg-white ">{value}</li>
+      <li className="inline list-none cursor-pointer  bg-white">{value}</li>
     </div>
   );
 };
