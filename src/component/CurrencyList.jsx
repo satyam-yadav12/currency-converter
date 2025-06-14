@@ -12,7 +12,7 @@ export const CurrencyList = ({
   // const [baseCurr, setSearchInput] = useState(baseCurr);
   // const [flag, setFlag] = useState(Dflag);
   const [showDropDown, setShowDropDown] = useState(false);
-  const [updateFlag, setUpdateFlag] = useState(false);
+  const [firstInteraction, setfirstInteraction] = useState(false);
 
   function setInput(value, bool, img) {
     changeBase(value);
@@ -22,9 +22,9 @@ export const CurrencyList = ({
 
   const handleInputChange = (e) => {
     changeBase(e.target.value);
-    if (updateFlag) {
+    if (firstInteraction) {
       ChangeFlag("https://cdn-icons-png.flaticon.com/128/6897/6897039.png");
-      setUpdateFlag(false);
+      setfirstInteraction(false);
     }
   };
 
@@ -43,11 +43,11 @@ export const CurrencyList = ({
           onDrop={(e) => e.preventDefault()}
           onClick={(e) => {
             setShowDropDown(true);
-            setUpdateFlag(true);
+            setfirstInteraction(true);
             return e.target.select();
           }}
           placeholder="Enter currency code/ country Name"
-          className="p-1.5 m-4 border-none h-12 w-[70%]  mt-1  pt-1 ml-2 border-l-0 outline-none focus:outline-none  sm:w-65"
+          className="p-1.5 pr-0 mr-0 m-4 border-none h-12 w-[70%]  mt-1  pt-1 ml-2 border-l-0 outline-none focus:outline-none  sm:w-65"
         />
       </div>
 
@@ -55,12 +55,10 @@ export const CurrencyList = ({
         className={
           !showDropDown
             ? "hidden"
-            : "max-h-70 h-max bg-white rounded-2xl overflow-auto max-w-87 w-max  absolute z-999  whitespace-nowrap text-ellipsis overflow-x-hidden scrollbar"
+            : "max-h-70 h-max bg-white rounded-2xl overflow-auto max-w-87 w-87  absolute z-999  whitespace-nowrap text-ellipsis overflow-x-auto scrollbar"
         }
       >
-        {baseCurr === "" ||
-        baseCurr === "INR - Indian Rupee" ||
-        baseCurr === "USD - United States Dollar"
+        {baseCurr === "" || firstInteraction == true
           ? currency.map((data, index) => {
               return (
                 <SelectOptions
@@ -68,6 +66,7 @@ export const CurrencyList = ({
                   value={`${data.code} - ${data.name}`}
                   flag={data.flag}
                   setInput={setInput}
+                  setfirstInteraction={setfirstInteraction}
                 />
               );
             })
@@ -88,6 +87,7 @@ export const CurrencyList = ({
                     value={`${data.code} - ${data.name}`}
                     flag={data.flag}
                     setInput={setInput}
+                    setfirstInteraction={setfirstInteraction}
                   />
                 );
               }

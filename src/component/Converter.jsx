@@ -4,19 +4,23 @@ import { CurrencyList } from "./CurrencyList";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 
-export const Converter = () => {
-  const [firstBase, setFirstBase] = useState("INR - Indian Rupee");
-  const [secBase, setSecBase] = useState("USD - United States Dollar");
+export const Converter = ({
+  firstBase,
+  setFirstBase,
+  setSecBase,
+  secBase,
+  changeGraph,
+}) => {
   const [baseFlagFirst, changeBaseFlagFirst] = useState(
-    "https://flagcdn.com/w320/in.png"
-  );
-  const [baseFlagSecond, changeBaseFlagSecond] = useState(
     "https://cdn-icons-png.flaticon.com/128/206/206626.png"
   );
+  const [baseFlagSecond, changeBaseFlagSecond] = useState(
+    "https://flagcdn.com/w320/in.png"
+  );
   const [baseValue, setBaseValue] = useState(1);
-
-  const [result, setResult] = useState("_______");
-  const [subValues, setSubValues] = useState("____");
+  const [result, setResult] = useState("");
+  const [subValues, setSubValues] = useState("");
+  const [fetchTime, setFetchTime] = useState(null);
 
   useEffect(() => {
     if (firstBase === "") {
@@ -66,24 +70,29 @@ export const Converter = () => {
         const singleAmountValue = (
           response.data.value / response.data.amount
         ).toFixed(4);
+
         const subresult = `1 ${from[1]} = ${singleAmountValue} ${to[1]} `;
         setSubValues(subresult);
         setResult(Output);
       })
       .catch((error) => {
-        // console.log(error, "error");
+        console.log(error, "error");
         if (error.status === 603) {
           setResult("Unable to Convert");
-          setSubValues("some interner error occured. come soon!");
+          setSubValues("some internal error occured. come soon!");
+        } else {
+          setResult("Oops! Something went wrong");
+          setSubValues("");
         }
       });
+    changeGraph(true);
   };
   useEffect(() => {
     ConvertCurrency();
   }, []);
 
   return (
-    <div className="w-full sm:w-2/3 m-auto">
+    <div className="w-full sm:w-[70%] overflow-visible m-auto">
       <h1 className="text-3xl sm:text-4xl font-bold text-center  mt-5 mb-8 tracking-tight">
         CURRENCY CONVERTER
       </h1>
@@ -95,10 +104,10 @@ export const Converter = () => {
           onChange={(e) => setBaseValue(e.target.value)}
           onClick={(e) => e.target.select()}
           placeholder="Enter Amount"
-          className="h-14 p-2 w-[95%]   sm:w-85 px-4 py-3 text-lg font-medium text-gray-800 placeholder-gray-400 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-0.5 transition-all focus:border-1 focus:border-blue-500"
+          className="h-14 p-2 w-[95%]   sm:w-82 px-4 py-3 text-lg font-medium text-gray-800 placeholder-gray-400 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-1 transition-all focus:border-1 focus:border-blue-500"
         />
       </div>
-      <div className="flex flex-col justify-between items-center sm:flex-row w-full h-60 mt-5 sm:h-20 m-auto sm:m-0">
+      <div className="flex flex-col justify-between items-center sm:flex-row w-full overflow-hidden h-60 mt-5 sm:h-20 m-auto sm:m-0 ">
         <div className="  w-[95%] sm:w-75  ">
           <CurrencyList
             baseCurr={firstBase}
@@ -107,7 +116,7 @@ export const Converter = () => {
             ChangeFlag={changeBaseFlagFirst}
           />
         </div>
-        <div className=" w-max my-0 sm:mx-3 rotate-90 sm:rotate-0">
+        <div className=" w-max my-0  rotate-90 sm:rotate-0">
           <img
             src="https://cdn-icons-png.flaticon.com/128/10042/10042544.png"
             alt="reverse"
@@ -115,7 +124,7 @@ export const Converter = () => {
             onClick={reverseValue}
           />
         </div>
-        <div className="w-[95%] sm:w-75  ">
+        <div className="w-[95%] sm:w-75 sm:mr-8 ">
           <CurrencyList
             baseCurr={secBase}
             changeBase={setSecBase}
@@ -124,10 +133,10 @@ export const Converter = () => {
           />
         </div>
       </div>
-      <div className="block m-auto  w-30 border-none text-center bg-linear-to-r from-cyan-500 to-blue-500 my-7  rounded-[10px] cursor-pointer transition-colors duration-300 ease-in-out hover:bg-blue-500 ">
+      <div className="block m-auto  w-30 border-none text-center bg-linear-to-r from-cyan-500 to-blue-500 my-7  rounded-[10px] cursor-pointer hover:from-cyan-600 hover:to-blue-600">
         <button
           onClick={ConvertCurrency}
-          className="font-bold px-4 py-3 text-white block w-30 text-center"
+          className="font-bold px-4 py-3 text-white block w-30 text-center "
         >
           CONVERT
         </button>
@@ -135,7 +144,7 @@ export const Converter = () => {
 
       {/* result */}
 
-      <div className="m-3 ml-0 mt-8 p-5 shadow-2xs bg-[#f1f5f9] font-['segoe UI'] border-l-3 border-[#007bff] ">
+      <div className="m-3 ml-0 mr-0 mt-8 p-5 shadow-2xs bg-[#f1f5f9] font-['segoe UI'] border-l-3 border-[#007bff] ">
         {/* <h1 className="p-0.5 text-2xl font-bold">Result</h1> */}
         {result === "" ? (
           <div>
@@ -148,6 +157,9 @@ export const Converter = () => {
             </p>
             <p className="p-0 mt-0 font-mono text-lg pl-0.5 text-gray-600">
               {subValues}
+            </p>
+            <p className="p-0 mt-0 font-mono text-lg pl-0.5 text-gray-600">
+              {fetchTime}
             </p>
           </>
         )}

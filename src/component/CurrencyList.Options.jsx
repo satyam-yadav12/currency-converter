@@ -1,8 +1,14 @@
 import React from "react";
 
-export const SelectOptions = ({ value, flag, setInput }) => {
+export const SelectOptions = ({
+  value,
+  flag,
+  setInput,
+  setfirstInteraction,
+}) => {
   const setval = () => {
     setInput(value, true, flag);
+    setfirstInteraction(false);
   };
   return (
     <div onClick={setval} className="">
