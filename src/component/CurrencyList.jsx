@@ -55,7 +55,7 @@ export const CurrencyList = ({
         className={
           !showDropDown
             ? "hidden"
-            : "max-h-70 h-max bg-white rounded-2xl overflow-auto max-w-87 w-87  absolute z-999  whitespace-nowrap text-ellipsis overflow-x-auto scrollbar"
+            : "max-h-70 h-max bg-white rounded-2xl overflow-auto max-w-82 w-82  absolute z-999  whitespace-nowrap text-ellipsis overflow-x-auto scrollbar "
         }
       >
         {baseCurr === "" || firstInteraction == true

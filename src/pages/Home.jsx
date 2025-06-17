@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Converter } from "../component/Converter";
-import { CurrencyBoard } from "../component/CurrencyBoard";
-import { Graph } from "../component/Graph";
+import { Converter } from "../features/Converter";
+import { CurrencyBoard } from "../features/CurrencyBoard";
+import { Graph } from "../features/Graph";
 
 export const Home = () => {
   const [firstBase, setFirstBase] = useState("USD - United States Dollar");

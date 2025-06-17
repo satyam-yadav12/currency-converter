@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { CurrencyList } from "./CurrencyList";
+import { CurrencyList } from "../component/CurrencyList";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 
