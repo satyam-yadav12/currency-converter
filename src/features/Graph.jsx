@@ -1,7 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import { LineChart } from "@mui/x-charts";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
   const [DaysList, setDaysList] = useState([""]);
@@ -15,10 +15,11 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
   });
   const [GraphSummary, setGraphSummary] = useState({ high: 0, low: 0, avg: 0 });
   const [GraphDrop, setGraphDrop] = useState(false);
+  const firstRef = useRef(null);
 
   const deviceWidth = window.innerWidth;
   // console.log(deviceWidth, "width");
-  /*   https://api.currencybeacon.com/v1/timeseries?api_key=NozTkg8PyYgvjMJ1HuNdITIIGmvxnnaB&base=USD&start_date=2025-05-01&end_date=2025-06-01&symbols=INR */
+
   useEffect(() => {
     const obj = {
       first: firstBase,
@@ -26,7 +27,8 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
     };
 
     setGraphBaseList(obj);
-  }, [changeGraph]);
+  }, [firstBase, secBase]);
+
   const fetchSeries = (firstValue, secValue) => {
     setShowChart(false);
     const today = new Date();
@@ -40,7 +42,7 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
     const end = `${endDate.getFullYear()}-0${
       endDate.getMonth() + 1
     }-${endDate.getDate()}`;
-    console.log(start, end);
+    // console.log(start, end);
 
     axios
       .get(
@@ -51,7 +53,7 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
         }&start_date=${end}&end_date=${start}&symbols=${secValue.split("-")[0]}`
       )
       .then((response) => {
-        console.log(response.data, "response data");
+        // console.log(response.data, "response data");
 
         const timeLine = response.data.response;
 
@@ -117,7 +119,7 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
       fetchSeries(first, second);
       setChangeGraph(false);
     }
-  }, [graphBaseList]);
+  }, [changeGraph]);
 
   const changeNumberOfDays = (e) => {
     const daysValue = e.target.value;
@@ -128,10 +130,11 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
   const changeGraphBaseList = (e) => {
     const value = graphBaseList.second;
     const value2 = graphBaseList.first;
-    console.log(e);
+    // console.log(e);
     const obj = { first: value, second: value2 };
     setGraphBaseList(obj);
     setGraphDrop(false);
+
     setDaysNumber(30);
     setChangeGraph(true);
   };
@@ -158,15 +161,35 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
   useEffect(() => {
     calculateGraphSummery();
   }, [TimeData]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (firstRef.current && !firstRef.current.contains(event.target)) {
+        if (GraphDrop) {
+          setGraphDrop(false);
+        }
+        // Close dropdown when clicking outside
+      }
+    };
+
+    document.body.addEventListener("click", handleClickOutside);
+    return () => {
+      document.body.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   return (
     <div>
-      <h1 className="text-3xl text-center mt-4 mb-0">Time Series</h1>
-      <div className=" mt-0 p-4 px-0 pt-2">
-        <section className="w-[98%] sm:w-[70%] flex justify-evenly items-center bg-white m-auto mt-8 p-3 px-0">
+      <h1 className="text-3xl text-center mt-5 mb-5 font-bold ">
+        {graphBaseList.first.split("-")[0]} To{" "}
+        {graphBaseList.second.split("-")[0]} Chart
+      </h1>
+      <div className=" mt-0 p-4 pt-0 px-0 ">
+        <section className="w-[98%] sm:w-[70%] flex justify-evenly items-center bg-white m-auto  p-3 px-0">
           <div>
             <div
-              className="cursor-pointer bg-gray-50 relative text-black border-1 border-gray-200 hover:bg-gray-200  selection:bg-gray-200 sm:w-30  p-2 m-1 shadow-xl  rounded-lg inline"
+              className="cursor-pointer bg-gray-50 relative text-black border-1 border-gray-200 hover:bg-gray-200  selection:bg-gray-200 sm:w-30  p-2 pt-0 mt-0 m-1 shadow-xl  rounded-lg inline"
               onClick={() => setGraphDrop(!GraphDrop)}
+              ref={firstRef}
             >
               Change Base{" "}
               <img
@@ -229,8 +252,7 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
                       data: TimeData,
                       label: label,
                       labelMarkType: "square",
-                      showMark:
-                        deviceWidth > 500 && daysNumber <= 30 ? true : false,
+                      showMark: deviceWidth > 500 ? true : false,
                     },
                   ]}
                   grid={{ vertical: false, horizontal: true }}
@@ -246,10 +268,19 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
           )}
         </section>
       </div>
-      <div className="p-3 text-3xl m-auto text-center">
-        <p className="p-1 ">Highest: {GraphSummary.high.toFixed(6)}</p>
-        <p className="p-1 ">Lowest: {GraphSummary.low.toFixed(6)}</p>
-        <p className="p-1 ">Average: {GraphSummary.avg.toFixed(6)}</p>
+      <div className="m-auto p-5 shadow-2xs bg-[#f1f5f9] font-['segoe UI'] border-l-3 border-[#007bff] w-full sm:w-[70%] font-semibold  grid grid-cols-1 sm:grid-cols-3">
+        <p className="p-1 ">
+          <span className="text-blue-600 inline font-semibold">Highest:</span>{" "}
+          {GraphSummary.high.toFixed(6)}
+        </p>
+        <p className="p-1 ">
+          <span className="text-blue-600 inline font-semibold">Lowest:</span>{" "}
+          {GraphSummary.low.toFixed(6)}
+        </p>
+        <p className="p-1 ">
+          <span className="text-blue-600 inline font-semibold">Average:</span>{" "}
+          {GraphSummary.avg.toFixed(6)}
+        </p>
       </div>
     </div>
   );
