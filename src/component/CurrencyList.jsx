@@ -30,11 +30,11 @@ export const CurrencyList = ({
 
   return (
     <div>
-      <div className="border-1 border-[#ccc]  h-16 p-1 pr-0 shadow-lg rounded-lg bg-white transition-colors duration-300 ease-in-out focus-within:border-blue-500  hover:border-blue-500 font-semibold w-[95%] sm:w-max">
+      <div className="border-1 border-[#ccc]  h-20  shadow-lg rounded-lg bg-white transition-colors duration-300 ease-in-out focus-within:border-blue-500  hover:border-blue-500 font-semibold  sm:w-full">
         <img
           src={baseFlag}
           alt="flag"
-          className="inline p-1.5 py-0 h-14  pr-0 pt-0 object-contain w-14  border-0 "
+          className="inline  h-20 ml-2 object-contain w-14  border-0 "
         />
         <input
           type="text"
@@ -46,8 +46,8 @@ export const CurrencyList = ({
             setfirstInteraction(true);
             return e.target.select();
           }}
-          placeholder="Enter currency code/ country Name"
-          className="p-1.5 pr-0 mr-0 m-4 border-none h-12 w-[70%]  mt-1  pt-1 ml-2 border-l-0 outline-none focus:outline-none  sm:w-65"
+          placeholder="Enter currency code/country Name"
+          className=" border-none h-20 ml-2 w-[70%]  border-l-0 outline-none focus:outline-none  sm:w-65"
         />
       </div>
 

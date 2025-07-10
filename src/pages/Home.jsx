@@ -7,6 +7,7 @@ export const Home = () => {
   const [firstBase, setFirstBase] = useState("USD - United States Dollar");
   const [secBase, setSecBase] = useState("INR - Indian Rupee");
   const [changeGraph, setChangeGraph] = useState(false);
+  const [changeCurrencyBoard, setChangeCurrencyBoard] = useState(false);
   return (
     <div>
       <div className="w-full">
@@ -16,6 +17,7 @@ export const Home = () => {
           setSecBase={setSecBase}
           secBase={secBase}
           changeGraph={setChangeGraph}
+          changeBoard={setChangeCurrencyBoard}
         />
       </div>
       <div>
@@ -27,7 +29,11 @@ export const Home = () => {
         />
       </div>
       <div>
-        <CurrencyBoard firstBase={firstBase} secBase={secBase} />
+        <CurrencyBoard
+          firstBase={firstBase}
+          changeBoard={changeCurrencyBoard}
+          setChangeBoard={setChangeCurrencyBoard}
+        />
       </div>
     </div>
   );

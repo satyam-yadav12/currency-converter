@@ -13,6 +13,10 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
     first: firstBase,
     second: secBase,
   });
+  const [LoadedChart, setLoadedChart] = useState({
+    Base: "select",
+    secondary: "select",
+  });
   const [GraphSummary, setGraphSummary] = useState({ high: 0, low: 0, avg: 0 });
   const [GraphDrop, setGraphDrop] = useState(false);
   const firstRef = useRef(null);
@@ -32,17 +36,17 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
   const fetchSeries = (firstValue, secValue) => {
     setShowChart(false);
     const today = new Date();
-    const start = `${today.getFullYear()}-0${
+    const start = `${String(today.getFullYear())}-${String(
       today.getMonth() + 1
-    }-${today.getDate()}`;
+    ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
     const endDate = new Date(today);
     const NumberOfDays = daysNumber - 1;
     endDate.setDate(today.getDate() - NumberOfDays);
 
-    const end = `${endDate.getFullYear()}-0${
+    const end = `${String(endDate.getFullYear())}-${String(
       endDate.getMonth() + 1
-    }-${endDate.getDate()}`;
-    // console.log(start, end);
+    ).padStart(2, "0")}-${String(endDate.getDate()).padStart(2, "0")}`;
+    console.log(start, end, "correct dates");
 
     axios
       .get(
@@ -71,7 +75,13 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
           `price of 1 ${firstValue.split("-")[0]} in ${secValue.split("-")[0]}`
         );
         setShowChart(true);
+        const obj = {
+          Base: firstValue,
+          secondary: secValue,
+        };
+        setLoadedChart(obj);
       })
+
       .catch((error) => {
         setShowChart(false);
         console.log("some error occured", error);
@@ -177,17 +187,21 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
       document.body.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    console.log(LoadedChart.Base, "base", LoadedChart.secondary, "secondary");
+  }, [LoadedChart]);
   return (
     <div>
       <h1 className="text-3xl text-center mt-5 mb-5 font-bold ">
-        {graphBaseList.first.split("-")[0]} To{" "}
-        {graphBaseList.second.split("-")[0]} Chart
+        {LoadedChart.Base.split("-")[0]} To{" "}
+        {LoadedChart.secondary.split("-")[0]} Chart
       </h1>
       <div className=" mt-0 p-4 pt-0 px-0 ">
-        <section className="w-[98%] sm:w-[70%] flex justify-evenly items-center bg-white m-auto  p-3 px-0">
+        <section className="w-[98%] sm:w-[95%] flex justify-evenly items-center bg-white m-auto  p-3 px-0">
           <div>
             <div
-              className="cursor-pointer bg-gray-50 relative text-black border-1 border-gray-200 hover:bg-gray-200  selection:bg-gray-200 sm:w-30  p-2 pt-0 mt-0 m-1 shadow-xl  rounded-lg inline"
+              className="cursor-pointer bg-gray-50 relative text-black border-1 border-gray-200 hover:bg-gray-200  selection:bg-gray-200 sm:w-30  p-2  mt-0 m-1 shadow-xl  rounded-lg inline"
               onClick={() => setGraphDrop(!GraphDrop)}
               ref={firstRef}
             >
@@ -203,7 +217,7 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
                     onClick={changeGraphBaseList}
                     className="list-none p-1 bg-gray-100  hover:bg-gray-200  cursor-pointer"
                   >
-                    {graphBaseList.second}
+                    {LoadedChart.secondary}
                   </li>
                 </ul>
               </div>
@@ -238,7 +252,7 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
                 No Data to Show
               </div>
             ) : (
-              <div className="bg-white  scroll-auto w-[100%] sm:w-[70%] m-auto grid h-80 sm:h-100 object-cover pt-0 pb-6 pl-0 ">
+              <div className="bg-white  scroll-auto w-[100%] sm:w-[95%] m-auto grid h-85 sm:h-110 object-cover pt-0 pb-6 pl-0 ">
                 <LineChart
                   xAxis={[
                     {
@@ -252,12 +266,13 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
                       data: TimeData,
                       label: label,
                       labelMarkType: "square",
-                      showMark: deviceWidth > 500 ? true : false,
+                      showMark:
+                        deviceWidth > 500 && daysNumber <= 30 ? true : false,
                     },
                   ]}
                   grid={{ vertical: false, horizontal: true }}
                   showToolbar={true}
-                  height={deviceWidth > 500 ? 380 : 240}
+                  height={deviceWidth > 500 ? 420 : 260}
                 />
               </div>
             )
@@ -268,7 +283,7 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
           )}
         </section>
       </div>
-      <div className="m-auto p-5 shadow-2xs bg-[#f1f5f9] font-['segoe UI'] border-l-3 border-[#007bff] w-full sm:w-[70%] font-semibold  grid grid-cols-1 sm:grid-cols-3">
+      <div className="m-auto p-5 shadow-2xs bg-[#f1f5f9] font-['segoe UI'] border-l-3 border-[#007bff] w-full sm:w-[95%] font-semibold  grid grid-cols-1 sm:grid-cols-3">
         <p className="p-1 ">
           <span className="text-blue-600 inline font-semibold">Highest:</span>{" "}
           {GraphSummary.high.toFixed(6)}

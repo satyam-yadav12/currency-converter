@@ -10,6 +10,7 @@ export const Converter = ({
   setSecBase,
   secBase,
   changeGraph,
+  changeBoard,
 }) => {
   const [baseFlagFirst, changeBaseFlagFirst] = useState(
     "https://cdn-icons-png.flaticon.com/128/206/206626.png"
@@ -86,29 +87,31 @@ export const Converter = ({
         }
       });
     changeGraph(true);
+    changeBoard(true);
   };
   useEffect(() => {
     ConvertCurrency();
   }, []);
 
   return (
-    <div className="w-full sm:w-[70%] overflow-visible m-auto">
+    <div className="w-full  overflow-visible m-auto ">
       <h1 className="text-3xl sm:text-4xl font-bold text-center  mt-5 mb-8 tracking-tight">
         CURRENCY CONVERTER
       </h1>
-      <div className="sm:w-1/2 w-[95%] m-auto sm:m-0 block my-5 ">
-        <input
-          type="number"
-          name="Value"
-          value={baseValue}
-          onChange={(e) => setBaseValue(e.target.value)}
-          onClick={(e) => e.target.select()}
-          placeholder="Enter Amount"
-          className="h-14 p-2 w-[95%]   sm:w-82 px-4 py-3 text-lg font-medium text-gray-800 placeholder-gray-400 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-1 transition-all focus:border-1 focus:border-blue-500"
-        />
-      </div>
-      <div className="flex flex-col justify-between items-center sm:flex-row w-full overflow-hidden h-60 mt-5 sm:h-20 m-auto sm:m-0 ">
-        <div className="  w-[95%] sm:w-75  ">
+      <div className="grid grid-cols-1 sm:grid-cols-13 gap-2 mt-5  m-auto w-[95%] sm:w-[95%]">
+        <div className=" m-0 sm:col-span-4 ">
+          <input
+            type="number"
+            name="Value"
+            value={baseValue}
+            onChange={(e) => setBaseValue(e.target.value)}
+            onClick={(e) => e.target.select()}
+            placeholder="Enter Amount"
+            className="h-20 w-full p-3 text-lg font-medium text-gray-800 placeholder-gray-400 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-1 transition-all focus:border-1 focus:border-blue-500"
+          />
+        </div>
+
+        <div className="sm:col-span-4 h-20 w-full m-0 ">
           <CurrencyList
             baseCurr={firstBase}
             changeBase={setFirstBase}
@@ -116,15 +119,21 @@ export const Converter = ({
             ChangeFlag={changeBaseFlagFirst}
           />
         </div>
-        <div className=" w-max my-0  rotate-90 sm:rotate-0">
-          <img
-            src="https://cdn-icons-png.flaticon.com/128/10042/10042544.png"
-            alt="reverse"
-            className="w-14 p-2 m-auto"
+        <div className="sm:col-start-9 sm:col-end-10 flex items-center justify-center z-10 ">
+          <button
             onClick={reverseValue}
-          />
+            className="p-3 bg-white rounded-full shadow-md mx-2 hover:bg-gray-100 transition"
+            title="Swap Currencies"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/10042/10042544.png"
+              alt="swap"
+              width={40}
+              className="transform rotate-90 sm:rotate-0"
+            />
+          </button>
         </div>
-        <div className="w-[95%] sm:w-75 sm:mr-8 ">
+        <div className="sm:col-span-4  ml-0 w-full">
           <CurrencyList
             baseCurr={secBase}
             changeBase={setSecBase}
@@ -133,10 +142,10 @@ export const Converter = ({
           />
         </div>
       </div>
-      <div className="block m-auto  w-30 border-none text-center bg-linear-to-r from-cyan-500 to-blue-500 my-7  rounded-[10px] cursor-pointer hover:from-cyan-600 hover:to-blue-600">
+      <div className="block m-auto  w-[50%] sm:w-[20%]  h-max border-none text-center bg-linear-to-r from-cyan-500 to-blue-500 my-7  rounded-[10px] cursor-pointer hover:from-cyan-600 hover:to-blue-600">
         <button
           onClick={ConvertCurrency}
-          className="font-bold px-4 py-3 text-white block w-30 text-center "
+          className="font-bold text-2xl p-4 text-white block  text-center m-auto "
         >
           CONVERT
         </button>
@@ -144,7 +153,7 @@ export const Converter = ({
 
       {/* result */}
 
-      <div className="m-3 ml-0 mr-0 mt-8 p-5 shadow-2xs bg-[#f1f5f9] font-['segoe UI'] border-l-3 border-[#007bff] ">
+      <div className="block mt-8 p-5 shadow-2xs bg-[#f1f5f9] font-['segoe UI'] border-l-3 border-[#007bff] sm:w-[95%] m-auto">
         {/* <h1 className="p-0.5 text-2xl font-bold">Result</h1> */}
         {result === "" ? (
           <div>

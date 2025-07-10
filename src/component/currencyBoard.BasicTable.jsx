@@ -84,7 +84,7 @@ export default function BasicTable({ latestRates, toggleValues }) {
   return (
     <TableContainer
       component={Paper}
-      sx={{ borderRadius: 2, p: 2, mx: "auto", boxShadow: 3 }}
+      sx={{ borderRadius: 2, p: 1, mx: "auto", boxShadow: 3 }}
     >
       <Table aria-label="styled table">
         <TableHead>
