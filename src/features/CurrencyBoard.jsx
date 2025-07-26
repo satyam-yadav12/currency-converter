@@ -1,4 +1,3 @@
-import { meta } from "@eslint/js";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import BasicTable from "../component/currencyBoard.BasicTable";
@@ -19,7 +18,7 @@ export const CurrencyBoard = ({ firstBase, changeBoard, setChangeBoard }) => {
       .then((response) => {
         // console.log(response.data.rates);
         setLatestBoard(response.data.rates);
-        console.log("updated");
+        // console.log("updated");
 
         setChangeBoard(false);
       })

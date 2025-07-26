@@ -11,6 +11,7 @@ export const Converter = ({
   secBase,
   changeGraph,
   changeBoard,
+  setSaveHistory,
 }) => {
   const [baseFlagFirst, changeBaseFlagFirst] = useState(
     "https://cdn-icons-png.flaticon.com/128/206/206626.png"
@@ -88,6 +89,7 @@ export const Converter = ({
       });
     changeGraph(true);
     changeBoard(true);
+    setSaveHistory(true);
   };
   useEffect(() => {
     ConvertCurrency();
@@ -95,9 +97,6 @@ export const Converter = ({
 
   return (
     <div className="w-full  overflow-visible m-auto ">
-      <h1 className="text-3xl sm:text-4xl font-bold text-center  mt-5 mb-8 tracking-tight">
-        CURRENCY CONVERTER
-      </h1>
       <div className="grid grid-cols-1 sm:grid-cols-13 gap-2 mt-5  m-auto w-[95%] sm:w-[95%]">
         <div className=" m-0 sm:col-span-4 ">
           <input
@@ -105,7 +104,6 @@ export const Converter = ({
             name="Value"
             value={baseValue}
             onChange={(e) => setBaseValue(e.target.value)}
-            onClick={(e) => e.target.select()}
             placeholder="Enter Amount"
             className="h-20 w-full p-3 text-lg font-medium text-gray-800 placeholder-gray-400 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none  focus:ring-1 transition-all focus:border-1 focus:border-blue-500"
           />

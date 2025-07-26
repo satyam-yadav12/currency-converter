@@ -30,7 +30,7 @@ export const CurrencyList = ({
 
   return (
     <div>
-      <div className="border-1 border-[#ccc]  h-20  shadow-lg rounded-lg bg-white transition-colors duration-300 ease-in-out focus-within:border-blue-500  hover:border-blue-500 font-semibold  sm:w-full">
+      <div className=" relative border-1 border-[#ccc]  h-20  shadow-lg rounded-lg bg-white transition-colors duration-300 ease-in-out focus-within:border-blue-500  hover:border-blue-500 font-semibold  sm:w-full">
         <img
           src={baseFlag}
           alt="flag"
@@ -47,7 +47,7 @@ export const CurrencyList = ({
             return e.target.select();
           }}
           placeholder="Enter currency code/country Name"
-          className=" border-none h-20 ml-2 w-[70%]  border-l-0 outline-none focus:outline-none  sm:w-65"
+          className=" absolute border-none h-20 ml-2 w-[70%]  border-l-0 outline-none focus:outline-none  sm:w-[70%] sm:pr-2  lg:pr-0 sm:overflow-ellipsis lg:w-65"
         />
       </div>
 

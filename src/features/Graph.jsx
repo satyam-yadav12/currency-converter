@@ -46,7 +46,7 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
     const end = `${String(endDate.getFullYear())}-${String(
       endDate.getMonth() + 1
     ).padStart(2, "0")}-${String(endDate.getDate()).padStart(2, "0")}`;
-    console.log(start, end, "correct dates");
+    // console.log(start, end, "correct dates");
 
     axios
       .get(
@@ -188,9 +188,6 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(LoadedChart.Base, "base", LoadedChart.secondary, "secondary");
-  }, [LoadedChart]);
   return (
     <div>
       <h1 className="text-3xl text-center mt-5 mb-5 font-bold ">
@@ -201,7 +198,7 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
         <section className="w-[98%] sm:w-[95%] flex justify-evenly items-center bg-white m-auto  p-3 px-0">
           <div>
             <div
-              className="cursor-pointer bg-gray-50 relative text-black border-1 border-gray-200 hover:bg-gray-200  selection:bg-gray-200 sm:w-30  p-2  mt-0 m-1 shadow-xl  rounded-lg inline"
+              className=" relative overflow-hidden p-1 py-2 sm:p-2 cursor-pointer bg-gray-50  text-black border-1 border-gray-200 hover:bg-gray-200  selection:bg-gray-200 sm:w-30   mt-0 m-1 shadow-xl  rounded-lg inline "
               onClick={() => setGraphDrop(!GraphDrop)}
               ref={firstRef}
             >
@@ -209,7 +206,7 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
               <img
                 src="https://cdn-icons-png.flaticon.com/128/6364/6364586.png"
                 alt="^"
-                className="inline h-2.5 w-3  pt-0 m-0"
+                className="inline h-2.5 w-3  pt-0 "
               />
               <div className={GraphDrop ? "absolute w-max " : "hidden"}>
                 <ul className="border-1 border-gray-200 bg-gray-100 rounded-sm  shadow-lg m-0.5 p-0.5">
@@ -224,35 +221,35 @@ export const Graph = ({ firstBase, secBase, changeGraph, setChangeGraph }) => {
             </div>
           </div>
           <button
-            className="cursor-pointer bg-gray-50 text-black border-1 border-gray-200 hover:bg-gray-200  selection:bg-gray-200 sm:w-30  p-2 m-1 shadow-xl rounded-lg"
+            className=" p-1 sm:p-2 cursor-pointer bg-gray-50 text-black border-1 border-gray-200 hover:bg-gray-200  selection:bg-gray-200 sm:w-30   m-1 shadow-xl rounded-lg"
             value={7}
             onClick={changeNumberOfDays}
           >
             7 days
           </button>
           <button
-            className="cursor-pointer bg-gray-50 text-black border-1 border-gray-200 hover:bg-gray-200  selection:bg-gray-200 sm:w-30 p-2 m-1 shadow-xl rounded-lg"
+            className="cursor-pointer bg-gray-50 text-black border-1 border-gray-200 hover:bg-gray-200  selection:bg-gray-200 sm:w-30 p-1 sm:p-2 m-1 shadow-xl rounded-lg"
             value={30}
             onClick={changeNumberOfDays}
           >
             30 days
           </button>
           <button
-            className=" cursor-pointer bg-gray-50 text-black border-1 border-gray-200 hover:bg-gray-200  selection:bg-gray-200 sm:w-30 p-2 m-1 shadow-xl rounded-lg"
+            className=" cursor-pointer bg-gray-50 text-black border-1 border-gray-200 hover:bg-gray-200  selection:bg-gray-200 sm:w-30 p-1 sm:p-2 m-1 shadow-xl rounded-lg"
             value={90}
             onClick={changeNumberOfDays}
           >
             90 days
           </button>
         </section>
-        <section className="mt-0 w-full pl-0 ">
+        <section className="mt-0 w-full pl-0 ml-0 overflow-hidden">
           {showChart ? (
             TimeData.every((element) => element === null) ? (
               <div className="text-3xl text-center flex items-center w-[75%] m-auto justify-center py-4 mt-4 my-4  bg-white h-20">
                 No Data to Show
               </div>
             ) : (
-              <div className="bg-white  scroll-auto w-[100%] sm:w-[95%] m-auto grid h-85 sm:h-110 object-cover pt-0 pb-6 pl-0 ">
+              <div className="bg-white  scroll-auto w-[100%] sm:w-[95%] ml-0  sm:m-auto grid h-85 sm:h-110 object-cover pt-0 pb-6 pl-0 ">
                 <LineChart
                   xAxis={[
                     {
